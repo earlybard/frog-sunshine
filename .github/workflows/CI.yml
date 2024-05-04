@@ -820,16 +820,6 @@ jobs:
             --xml-pretty \
             -o ${{ github.workspace }}/build/coverage.xml
 
-      - name: Upload coverage
-        # any except canceled or skipped
-        if: always() && (steps.test_report.outcome == 'success')
-        uses: codecov/codecov-action@v4
-        with:
-          fail_ci_if_error: false  # todo: re-enable this when action is fixed
-          files: ./build/coverage.xml
-          flags: ${{ runner.os }}-${{ matrix.os_version }}
-          token: ${{ secrets.CODECOV_TOKEN }}
-
       - name: Create/Update GitHub Release
         if: ${{ needs.setup_release.outputs.create_release == 'true' && matrix.release }}
         uses: ncipollo/release-action@v1
@@ -1056,16 +1046,6 @@ jobs:
             --exclude '.*tests/.*' \
             --xml-pretty \
             -o coverage.xml
-
-      - name: Upload coverage
-        # any except canceled or skipped
-        if: always() && (steps.test_report.outcome == 'success')
-        uses: codecov/codecov-action@v4
-        with:
-          fail_ci_if_error: true
-          files: ./build/coverage.xml
-          flags: ${{ runner.os }}
-          token: ${{ secrets.CODECOV_TOKEN }}
 
       - name: Package Windows Debug Info
         working-directory: build
