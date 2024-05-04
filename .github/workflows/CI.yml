@@ -504,17 +504,7 @@ jobs:
             --exclude '.*tests/.*' \
             --xml-pretty \
             -o coverage.xml
-
-      - name: Upload coverage
-        # any except canceled or skipped
-        if: always() && (steps.test_report.outcome == 'success')
-        uses: codecov/codecov-action@v4
-        with:
-          fail_ci_if_error: true
-          files: ./build/coverage.xml
-          flags: ${{ runner.os }}
-          token: ${{ secrets.CODECOV_TOKEN }}
-
+            
       - name: Create/Update GitHub Release
         if: ${{ needs.setup_release.outputs.create_release == 'true' }}
         uses: ncipollo/release-action@v1
